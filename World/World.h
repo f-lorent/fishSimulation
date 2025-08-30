@@ -1,0 +1,26 @@
+//
+// Created by florent on 30/08/2025.
+//
+
+#ifndef FISHSIMULATION_WORLD_H
+#define FISHSIMULATION_WORLD_H
+#include <vector>
+
+#include "../creature/fish/Fish.h"
+
+
+class World {
+    private:
+    int fishCount;
+    std::vector<Fish> fishes;
+
+    public:
+    World(int fishCount) {
+        this->fishCount = fishCount;
+    };
+    void initWorld();
+    void createFishs();
+};
+
+
+#endif //FISHSIMULATION_WORLD_H
