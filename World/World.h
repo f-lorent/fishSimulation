@@ -26,6 +26,9 @@ class World {
     private:
     void createFishs();
     void generatePositionOfFishs();
+    bool controlPositionX(Fish &fish);
+    bool controlPositionY(Fish &fish);
+    void adaptPosition(Fish &fish);
 };
 
 

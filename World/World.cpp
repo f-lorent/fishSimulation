@@ -8,11 +8,14 @@
 #include "../interface/Interface.h"
 #include "../creature/velocity/Velocity.h"
 
+std::vector<Fish> World::getFishs() {
+    return fishes;
+}
 
 void World::createFishs() {
     for (int i=0; i< fishCount; i++) {
         Position position = fishesPositions[i];
-        Velocity velocity(10.0, 0);
+        Velocity velocity(0.0, 0);
         Fish fish(i, position, velocity);
         fishes.push_back(fish);
     }
@@ -32,6 +35,45 @@ void World::generatePositionOfFishs() {
     }
 }
 
+bool World::controlPositionX(Fish &fish) {
+    Position position = fish.getPosition();
+    if (position.getX() >= WIDTH || position.getX() < 0) {
+        return true;
+    }
+    return false;
+}
+
+bool World::controlPositionY(Fish &fish) {
+    Position position = fish.getPosition();
+    if (position.getY() >= HEIGHT || position.getY() < 0) {
+        return true;
+    }
+    return false;
+}
+
+
+void World::adaptPosition(Fish &fish) {
+    if (controlPositionX(fish)) {
+        if (fish.getPosition().getX() >= WIDTH) {
+            Position newPosition(fish.getPosition().getX() - WIDTH, fish.getPosition().getY());
+            fish.setPosition(newPosition);
+        }else {
+            Position newPosition(fish.getPosition().getX() + WIDTH, fish.getPosition().getY());
+            fish.setPosition(newPosition);
+        }
+    }
+    else if (controlPositionY(fish)) {
+        if (fish.getPosition().getY() >= HEIGHT) {
+            Position newPosition(fish.getPosition().getX(), fish.getPosition().getY() - HEIGHT);
+            fish.setPosition(newPosition);
+        }else {
+            Position newPosition(fish.getPosition().getX(), fish.getPosition().getY() + HEIGHT);
+            fish.setPosition(newPosition);
+        }
+
+    }
+}
+
 void World::worldUpdate(double deltaTime) {
     for (Fish &f : fishes) {
         double x = f.getPosition().getX();
@@ -41,11 +83,8 @@ void World::worldUpdate(double deltaTime) {
         double newY = y + deltaTime * f.getVelocity().getVy();
         Position newPosition(newX, newY);
         f.setPosition(newPosition);
+        adaptPosition(f);
     }
-}
-
-std::vector<Fish> World::getFishs() {
-    return fishes;
 }
 
 void World::initWorld() {

@@ -13,8 +13,8 @@
 #define RED 10
 #define GREEN 43
 #define BLUE 88
-#define FISH_COUNT 1
-#define TIME_COEFFICIENT 1
+#define FISH_COUNT 100
+#define TIME_COEFFICIENT 10
 
 
 class Interface {
