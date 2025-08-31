@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "../position/Position.h"
+#include "../velocity/Velocity.h"
 
 #define FISH_RADIUS 2
 
@@ -14,11 +15,14 @@ class Fish {
 private:
     int id;
     Position position;
+    Velocity velocity;
 
 public:
-    Fish(int id, Position position) : id(id), position(position) {}
+    Fish(int id, Position position, Velocity velocity) : id(id), position(position), velocity(velocity) {}
     Position getPosition();
     void setPosition(Position position);
+    Velocity getVelocity();
+    void setVelocity(Velocity velocity);
     int getId();
     void drawFish(sf::RenderWindow* window);
 };

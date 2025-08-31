@@ -21,6 +21,7 @@ class World {
     };
     void initWorld();
     std::vector<Fish> getFishs();
+    void worldUpdate(double deltaTime);
 
     private:
     void createFishs();

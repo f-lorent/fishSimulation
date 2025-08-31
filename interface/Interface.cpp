@@ -21,16 +21,18 @@ void Interface::interfaceRender() {
     window.display();
 }
 
-void Interface::interfaceUpdate() {
-
+void Interface::interfaceUpdate(double deltatime) {
+    world.worldUpdate(deltatime);
 }
 
 void Interface::run() {
     world.initWorld();
+    sf::Clock clock;
     while (window.isOpen())
     {
+        sf::Time deltaTime = clock.restart();
         eventListener();
-        interfaceUpdate();
+        interfaceUpdate(deltaTime.asSeconds() * TIME_COEFFICIENT);
         interfaceRender();
     }
 }

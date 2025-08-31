@@ -13,7 +13,8 @@
 #define RED 10
 #define GREEN 43
 #define BLUE 88
-#define FISH_COUNT 200
+#define FISH_COUNT 1
+#define TIME_COEFFICIENT 1
 
 
 class Interface {
@@ -35,7 +36,8 @@ public:
 
 private:
     void eventListener();
-    void interfaceUpdate();
+
+    void interfaceUpdate(double deltaTime);
     void interfaceRender();
 };
 

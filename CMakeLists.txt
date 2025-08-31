@@ -12,6 +12,8 @@ add_executable(FishSimulation main.cpp
         interface/Interface.h
         World/World.cpp
         World/World.h
+        creature/velocity/Velocity.cpp
+        creature/velocity/Velocity.h
 )
 
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)

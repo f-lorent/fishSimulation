@@ -17,6 +17,14 @@ Position Fish::getPosition() {
     return position;
 }
 
+Velocity Fish::getVelocity() {
+    return velocity;
+}
+
+void Fish::setVelocity(Velocity velocity) {
+    this->velocity = velocity;
+}
+
 void Fish::drawFish(sf::RenderWindow* window) {
     sf::CircleShape fishShape(FISH_RADIUS);
     fishShape.setPosition(getPosition().getX(), getPosition().getY());
