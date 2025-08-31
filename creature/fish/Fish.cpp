@@ -3,6 +3,7 @@
 //
 
 #include "Fish.h"
+#include <SFML/Graphics.hpp>
 
 int Fish::getId() {
     return id;
@@ -10,4 +11,10 @@ int Fish::getId() {
 
 Position Fish::getPosition() {
     return position;
+}
+
+void Fish::drawFish(sf::RenderWindow* window) {
+    sf::CircleShape fishShape(FISH_RADIUS);
+    fishShape.setPosition(getPosition().getX(), getPosition().getY());
+    window->draw(fishShape);
 }

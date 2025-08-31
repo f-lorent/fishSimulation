@@ -20,6 +20,7 @@ class World {
     };
     void initWorld();
     void createFishs();
+    std::vector<Fish> getFishs();
 };
 
 

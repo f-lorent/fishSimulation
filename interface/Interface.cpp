@@ -15,13 +15,21 @@ void Interface::eventListener() {
 void Interface::interfaceRender() {
     window.clear(backgroundColor);
     window.draw(background);
+    for (Fish &f : world.getFishs()) {
+        f.drawFish(&window);
+    }
     window.display();
+}
+
+void Interface::interfaceUpdate() {
+    world.initWorld();
 }
 
 void Interface::run() {
     while (window.isOpen())
     {
         eventListener();
+        interfaceUpdate();
         interfaceRender();
     }
 }

@@ -6,12 +6,14 @@
 #define FISHSIMULATION_INTERFACE_H
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "../World/World.h"
 
 #define HEIGHT 1080
 #define WIDTH 1920
 #define RED 10
 #define GREEN 43
 #define BLUE 88
+#define FISH_COUNT 1
 
 
 class Interface {
@@ -19,11 +21,13 @@ private:
     sf::RenderWindow window;
     sf::RectangleShape background;
     sf::Color backgroundColor;
+    World world;
 
 public:
     Interface(): window(sf::VideoMode(WIDTH, HEIGHT),"fishSimulation"),
     background(sf::Vector2f(WIDTH, HEIGHT)),
-    backgroundColor(RED, GREEN, BLUE)
+    backgroundColor(RED, GREEN, BLUE),
+    world(FISH_COUNT)
     {
         background.setFillColor(backgroundColor);
     };
@@ -31,6 +35,7 @@ public:
 
 private:
     void eventListener();
+    void interfaceUpdate();
     void interfaceRender();
 };
 
