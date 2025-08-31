@@ -9,6 +9,10 @@ int Fish::getId() {
     return id;
 }
 
+void Fish::setPosition(Position position) {
+    this->position = position;
+}
+
 Position Fish::getPosition() {
     return position;
 }

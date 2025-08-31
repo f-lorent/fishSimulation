@@ -5,7 +5,7 @@
 #ifndef FISHSIMULATION_WORLD_H
 #define FISHSIMULATION_WORLD_H
 #include <vector>
-
+#include "../creature/position/Position.h"
 #include "../creature/fish/Fish.h"
 
 
@@ -13,14 +13,18 @@ class World {
     private:
     int fishCount;
     std::vector<Fish> fishes;
+    std::vector<Position> fishesPositions;
 
     public:
     World(int fishCount) {
         this->fishCount = fishCount;
     };
     void initWorld();
-    void createFishs();
     std::vector<Fish> getFishs();
+
+    private:
+    void createFishs();
+    void generatePositionOfFishs();
 };
 
 

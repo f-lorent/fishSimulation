@@ -8,7 +8,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "../position/Position.h"
 
-#define FISH_RADIUS 5
+#define FISH_RADIUS 2
 
 class Fish {
 private:
@@ -18,6 +18,7 @@ private:
 public:
     Fish(int id, Position position) : id(id), position(position) {}
     Position getPosition();
+    void setPosition(Position position);
     int getId();
     void drawFish(sf::RenderWindow* window);
 };

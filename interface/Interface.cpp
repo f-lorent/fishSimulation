@@ -22,10 +22,11 @@ void Interface::interfaceRender() {
 }
 
 void Interface::interfaceUpdate() {
-    world.initWorld();
+
 }
 
 void Interface::run() {
+    world.initWorld();
     while (window.isOpen())
     {
         eventListener();
