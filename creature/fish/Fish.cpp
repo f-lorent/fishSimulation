@@ -30,3 +30,8 @@ void Fish::drawFish(sf::RenderWindow* window) {
     fishShape.setPosition(getPosition().getX(), getPosition().getY());
     window->draw(fishShape);
 }
+
+bool Fish::operator==(const Fish& other) const {
+    return this->id == other.id;
+}
+

@@ -7,7 +7,9 @@
 #include <vector>
 #include "../creature/position/Position.h"
 #include "../creature/fish/Fish.h"
+#include "../vector/Vector2d.h"
 
+#define COHESION_COEFFICIENT 0.00001
 
 class World {
     private:
@@ -29,6 +31,10 @@ class World {
     bool controlPositionX(Fish &fish);
     bool controlPositionY(Fish &fish);
     void adaptPosition(Fish &fish);
+    std::vector<Fish> fishPerception(Fish &fish);
+    void cohesion(Fish &fish);
+    void mean(std::vector<Fish> fishes, double &meanX, double &meanY);
+    void maxVelocity(Fish &fish);
 };
 
 

@@ -4,6 +4,7 @@
 
 #ifndef FISHSIMULATION_VELOCITY_H
 #define FISHSIMULATION_VELOCITY_H
+#include "../../vector/Vector2d.h"
 
 
 class Velocity {
@@ -11,7 +12,7 @@ private:
     double vx, vy;
 
     public:
-    Velocity(int vX, int vY) {
+    Velocity(double vX, double vY) {
         this->vx = vX;
         this->vy = vY;
     };
@@ -19,6 +20,13 @@ private:
     double getVy();
     void setVx(double vx);
     void setVy(double vy);
+
+    Velocity operator+(const Vector2d& other) const {
+        return Velocity{vx + other.x1(), vy + other.y1()};
+    }
+
+    double length();
+    Velocity normalize();
 };
 
 

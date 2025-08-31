@@ -15,7 +15,7 @@ std::vector<Fish> World::getFishs() {
 void World::createFishs() {
     for (int i=0; i< fishCount; i++) {
         Position position = fishesPositions[i];
-        Velocity velocity(0.0, 0);
+        Velocity velocity(0.0, 0.0);
         Fish fish(i, position, velocity);
         fishes.push_back(fish);
     }
@@ -51,7 +51,6 @@ bool World::controlPositionY(Fish &fish) {
     return false;
 }
 
-
 void World::adaptPosition(Fish &fish) {
     if (controlPositionX(fish)) {
         if (fish.getPosition().getX() >= WIDTH) {
@@ -70,7 +69,50 @@ void World::adaptPosition(Fish &fish) {
             Position newPosition(fish.getPosition().getX(), fish.getPosition().getY() + HEIGHT);
             fish.setPosition(newPosition);
         }
+    }
+}
 
+std::vector<Fish> World::fishPerception(Fish &fish) {
+    double x = fish.getPosition().getX();
+    double y = fish.getPosition().getY();
+    std::vector<Fish> nearFishes;
+
+    for (Fish &f : fishes) {
+        double xFish = f.getPosition().getX();
+        double yFish = f.getPosition().getY();
+        double enclideanDistance = sqrt(pow(xFish - x, 2) + pow(yFish - y, 2));
+        if (enclideanDistance < PERCEPTION_RADIUS && fish != f) {
+            nearFishes.push_back(f);
+        }
+    }
+    return nearFishes;
+}
+
+void World::mean(std::vector<Fish> fishes, double &meanX, double &meanY) {
+    double sumX = 0.0;
+    double sumY = 0.0;
+    for (Fish &f : fishes) {
+        sumX += f.getPosition().getX();
+        sumY += f.getPosition().getY();
+    }
+    meanX = sumX / fishes.size();
+    meanY = sumY / fishes.size();
+}
+
+/**
+ * @brief Setup of the 1st law: Cohesion
+ * @param fish
+ */
+void World::cohesion(Fish &fish) {
+    std::vector<Fish> nearFishes = fishPerception(fish);
+    if (!nearFishes.empty()) {
+        double meanX = 0.0;
+        double meanY = 0.0;
+        mean(fishes, meanX, meanY);
+
+        Vector2d vectorCohesion = Vector2d(meanX - fish.getPosition().getX(), meanY - fish.getPosition().getY());
+        Velocity cohesionVelocity = fish.getVelocity() + vectorCohesion * COHESION_COEFFICIENT;
+        fish.setVelocity(cohesionVelocity);
     }
 }
 
@@ -83,6 +125,7 @@ void World::worldUpdate(double deltaTime) {
         double newY = y + deltaTime * f.getVelocity().getVy();
         Position newPosition(newX, newY);
         f.setPosition(newPosition);
+        cohesion(f);
         adaptPosition(f);
     }
 }

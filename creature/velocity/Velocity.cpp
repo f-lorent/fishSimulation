@@ -4,6 +4,9 @@
 
 #include "Velocity.h"
 
+#include <cmath>
+#include <math.h>
+
 double Velocity::getVx() {
     return this->vx;
 }
@@ -18,4 +21,12 @@ void Velocity::setVx(double vx) {
 
 void Velocity::setVy(double vy) {
     this->vy = vy;
+}
+
+double Velocity::length() {
+    return sqrt(this->vx * this->vx + this->vy * this->vy);
+}
+
+Velocity Velocity::normalize() {
+    return Velocity(vx / length(), vy / length());
 }

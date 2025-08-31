@@ -10,6 +10,8 @@
 #include "../velocity/Velocity.h"
 
 #define FISH_RADIUS 2
+#define PERCEPTION_RADIUS 1000
+#define MAX_VELOCITY 500.0
 
 class Fish {
 private:
@@ -25,6 +27,8 @@ public:
     void setVelocity(Velocity velocity);
     int getId();
     void drawFish(sf::RenderWindow* window);
+
+    bool operator==(const Fish& other) const;
 };
 
 
