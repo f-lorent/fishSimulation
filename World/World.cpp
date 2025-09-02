@@ -119,12 +119,15 @@ Vector2d World::separationForce(Fish &fish) {
         Vector2d temp(0.0, 0.0);
         double enclideanDistance = sqrt(pow(xFish - x, 2) + pow(yFish - y, 2));
         if (enclideanDistance < SEPARATION_RADIUS && fish != f) {
-            temp = Vector2d(f.getPosition().getX() - x, f.getPosition().getY() - y);
-            temp = temp.normalize();
+            temp = Vector2d(x - f.getPosition().getX(), y - f.getPosition().getY());
+            if (temp.lengh() > 0.0) {
+                temp = temp.normalize();
+            }
+
             separationVector = temp + separationVector;
         }
     }
-    return separationVector;
+    return separationVector * SEPARATION_COEFFICIENT;
 }
 
 /**
@@ -171,6 +174,12 @@ void World::worldUpdate(double deltaTime) {
         Vector2d forceAlignment = alignment(f);
 
         Velocity newVelocity = f.getVelocity() + forceCohesion + forceSeparation + forceAlignment;
+
+        if (newVelocity.getVx() > 1 || !newVelocity.getVy() > 1) {
+            std::cout << newVelocity.getVx() << std::endl;
+            std::cout << newVelocity.getVy() << std::endl;
+            std::cout << std::endl;
+        }
 
         if (newVelocity.length() > MAX_VELOCITY) {
             newVelocity = newVelocity.normalize() * MAX_VELOCITY;
