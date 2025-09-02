@@ -100,7 +100,7 @@ void World::mean(std::vector<Fish> fishes, double &meanX, double &meanY) {
 }
 
 /**
- * @brief Setup of the 1st law: Cohesion
+ * @brief Setup of the 1st rule: Cohesion
  * @param fish
  */
 void World::cohesion(Fish &fish) {
@@ -111,9 +111,40 @@ void World::cohesion(Fish &fish) {
         mean(fishes, meanX, meanY);
 
         Vector2d vectorCohesion = Vector2d(meanX - fish.getPosition().getX(), meanY - fish.getPosition().getY());
+        vectorCohesion = vectorCohesion.normalize();
         Velocity cohesionVelocity = fish.getVelocity() + vectorCohesion * COHESION_COEFFICIENT;
         fish.setVelocity(cohesionVelocity);
     }
+}
+
+Vector2d World::separationForce(Fish &fish) {
+    double x = fish.getPosition().getX();
+    double y = fish.getPosition().getY();
+    Vector2d separationVector(0.0, 0.0);
+
+    for (Fish &f : fishes) {
+        double xFish = f.getPosition().getX();
+        double yFish = f.getPosition().getY();
+        Vector2d temp(0.0, 0.0);
+        double enclideanDistance = sqrt(pow(xFish - x, 2) + pow(yFish - y, 2));
+        if (enclideanDistance < SEPARATION_RADIUS && fish != f) {
+            temp = Vector2d(f.getPosition().getX() - x, f.getPosition().getY() - y);
+            temp = temp.normalize();
+            separationVector = temp + separationVector;
+        }
+    }
+    return separationVector;
+}
+
+/**
+ * @brief Setup of the 2nd rule: Separation
+ * @param fish
+ */
+void World::separation(Fish &fish) {
+    Vector2d vecteurSeparation = separationForce(fish);
+    vecteurSeparation = vecteurSeparation * SEPARATION_COEFFICIENT;
+    Velocity fishSeparationVelocity = fish.getVelocity() + vecteurSeparation;
+    fish.setVelocity(fishSeparationVelocity);
 }
 
 void World::worldUpdate(double deltaTime) {
@@ -126,6 +157,7 @@ void World::worldUpdate(double deltaTime) {
         Position newPosition(newX, newY);
         f.setPosition(newPosition);
         cohesion(f);
+        separation(f);
         adaptPosition(f);
     }
 }

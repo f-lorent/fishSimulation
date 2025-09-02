@@ -9,7 +9,8 @@
 #include "../creature/fish/Fish.h"
 #include "../vector/Vector2d.h"
 
-#define COHESION_COEFFICIENT 0.00001
+#define COHESION_COEFFICIENT 0.005 // between 0.005 - 0.15
+#define SEPARATION_COEFFICIENT 1.5 // between 1.5 - 2.5
 
 class World {
     private:
@@ -33,8 +34,9 @@ class World {
     void adaptPosition(Fish &fish);
     std::vector<Fish> fishPerception(Fish &fish);
     void cohesion(Fish &fish);
+    void separation(Fish &fish);
+    Vector2d separationForce(Fish &fish);
     void mean(std::vector<Fish> fishes, double &meanX, double &meanY);
-    void maxVelocity(Fish &fish);
 };
 
 
