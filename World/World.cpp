@@ -3,6 +3,9 @@
 //
 
 #include "World.h"
+
+#include <iostream>
+#include <ostream>
 #include <random>
 #include "../creature/fish/Fish.h"
 #include "../interface/Interface.h"
@@ -110,18 +113,17 @@ void World::mean(std::vector<Fish> fishes, double &meanX, double &meanY) {
  * @brief Setup of the 1st rule: Cohesion
  * @param fish
  */
-void World::cohesion(Fish &fish) {
+Vector2d World::cohesion(Fish &fish) {
     std::vector<Fish> nearFishes = fishPerception(fish);
-    if (!nearFishes.empty()) {
-        double meanX = 0.0;
-        double meanY = 0.0;
-        mean(fishes, meanX, meanY);
-
-        Vector2d vectorCohesion = Vector2d(meanX - fish.getPosition().getX(), meanY - fish.getPosition().getY());
-        vectorCohesion = vectorCohesion.normalize();
-        Velocity cohesionVelocity = fish.getVelocity() + vectorCohesion * COHESION_COEFFICIENT;
-        fish.setVelocity(cohesionVelocity);
+    if (nearFishes.empty()) {
+        return Vector2d(0.0, 0.0);
     }
+    double meanX = 0.0, meanY = 0.0;
+    mean(fishes, meanX, meanY);
+
+    Vector2d vectorCohesion = Vector2d(meanX - fish.getPosition().getX(), meanY - fish.getPosition().getY());
+    vectorCohesion = vectorCohesion.normalize() * COHESION_COEFFICIENT;
+    return vectorCohesion;
 }
 
 Vector2d World::separationForce(Fish &fish) {
@@ -147,11 +149,10 @@ Vector2d World::separationForce(Fish &fish) {
  * @brief Setup of the 2nd rule: Separation
  * @param fish
  */
-void World::separation(Fish &fish) {
+Vector2d World::separation(Fish &fish) {
     Vector2d vecteurSeparation = separationForce(fish);
     vecteurSeparation = vecteurSeparation * SEPARATION_COEFFICIENT;
-    Velocity fishSeparationVelocity = fish.getVelocity() + vecteurSeparation;
-    fish.setVelocity(fishSeparationVelocity);
+    return vecteurSeparation;
 }
 
 void World::meanVelocity(std::vector<Fish> fishes, double &meanX, double &meanY) {
@@ -167,39 +168,41 @@ void World::meanVelocity(std::vector<Fish> fishes, double &meanX, double &meanY)
  * @brief Setup of the 3rd and final rule: alignment
  * @param fish
  */
-void World::alignment(Fish &fish) {
+Vector2d World::alignment(Fish &fish) {
     std::vector<Fish> nearFishes = fishPerception(fish);
-    if (!nearFishes.empty()) {
-        double meanVx = 0.0;
-        double meanVy = 0.0;
-        mean(nearFishes, meanVx, meanVy);
-        Vector2d vectorAlignment = Vector2d(meanVx, meanVy) - Vector2d(fish.getVelocity().getVx(), fish.getVelocity().getVy());
-        vectorAlignment = vectorAlignment.normalize();
-        Velocity alignmentVelocity = fish.getVelocity() + vectorAlignment * ALIGNMENT_COEFFICIENT;
-        fish.setVelocity(alignmentVelocity);
+    if (nearFishes.empty()) {
+        return Vector2d(0.0, 0.0);
     }
+
+    double meanVx = 0.0;
+    double meanVy = 0.0;
+    mean(nearFishes, meanVx, meanVy);
+    Vector2d vectorAlignment = Vector2d(meanVx, meanVy) - Vector2d(fish.getVelocity().getVx(), fish.getVelocity().getVy());
+    vectorAlignment = vectorAlignment.normalize() * ALIGNMENT_COEFFICIENT;
+    return vectorAlignment;
 }
 
 void World::worldUpdate(double deltaTime) {
     for (Fish &f : fishes) {
-        double x = f.getPosition().getX();
-        double y = f.getPosition().getY();
+        Vector2d forceCohesion = cohesion(f);
+        Vector2d forceSeparation = separationForce(f);
+        Vector2d forceAlignment = alignment(f);
 
-        Position newPosition(x, y);
+        Velocity newVelocity = f.getVelocity() + forceCohesion + forceSeparation + forceAlignment;
 
-        if (!adaptVelocity(f)) {
-            double newX = x + deltaTime * f.getVelocity().getVx();
-            double newY = y + deltaTime * f.getVelocity().getVy();
-            newPosition.setX(newX);
-            newPosition.setY(newY);
-        } else {
-
+        if (newVelocity.length() > MAX_VELOCITY) {
+            newVelocity = newVelocity.normalize() * MAX_VELOCITY;
         }
 
+        f.setVelocity(newVelocity);
+
+        Position newPosition(
+            f.getPosition().getX() + f.getVelocity().getVx() * deltaTime,
+            f.getPosition().getY() + f.getVelocity().getVy() * deltaTime
+        );
+
         f.setPosition(newPosition);
-        cohesion(f);
-        separation(f);
-        alignment(f);
+
         adaptPosition(f);
     }
 }

@@ -17,6 +17,8 @@ public:
     double getY();
     void setX(double newX);
     void setY(double newY);
+
+    Position operator+(const double scalar) const;
 };
 
 #endif //FISHSIMULATION_POSITION_H

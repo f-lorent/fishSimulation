@@ -30,3 +30,7 @@ double Velocity::length() {
 Velocity Velocity::normalize() {
     return Velocity(vx / length(), vy / length());
 }
+
+Velocity Velocity::operator*(const double scalar) const {
+    return Velocity(vx * scalar, vy * scalar);
+}

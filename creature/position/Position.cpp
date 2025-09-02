@@ -24,3 +24,7 @@ double Position::getX() {
 double Position::getY() {
     return y;
 }
+
+Position Position::operator+(const double scalar) const {
+    return Position{this->x + scalar, this->y + scalar};
+}

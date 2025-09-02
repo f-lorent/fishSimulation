@@ -9,10 +9,10 @@
 #include "../position/Position.h"
 #include "../velocity/Velocity.h"
 
-#define FISH_RADIUS 2
+#define FISH_RADIUS 1
 #define PERCEPTION_RADIUS 80 // between 80 - 120 px
 #define SEPARATION_RADIUS 20 // between 20 - 30 px
-#define MAX_VELOCITY 120.0 // between 120 - 180
+#define MAX_VELOCITY 10.0 // between 120 - 180
 
 class Fish {
 private:

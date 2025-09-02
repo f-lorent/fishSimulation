@@ -27,6 +27,7 @@ private:
 
     double length();
     Velocity normalize();
+    Velocity operator*(const double scalar) const;
 };
 
 

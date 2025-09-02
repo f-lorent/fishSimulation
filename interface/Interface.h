@@ -14,7 +14,7 @@
 #define GREEN 43
 #define BLUE 88
 #define FISH_COUNT 200
-#define TIME_COEFFICIENT 10
+#define TIME_COEFFICIENT 50
 
 
 class Interface {
