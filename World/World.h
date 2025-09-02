@@ -11,6 +11,7 @@
 
 #define COHESION_COEFFICIENT 0.005 // between 0.005 - 0.15
 #define SEPARATION_COEFFICIENT 1.5 // between 1.5 - 2.5
+#define ALIGNMENT_COEFFICIENT 1.5 // between 0.1 - 0.2
 
 class World {
     private:
@@ -32,11 +33,14 @@ class World {
     bool controlPositionX(Fish &fish);
     bool controlPositionY(Fish &fish);
     void adaptPosition(Fish &fish);
+    bool adaptVelocity(Fish &fish);
     std::vector<Fish> fishPerception(Fish &fish);
     void cohesion(Fish &fish);
     void separation(Fish &fish);
     Vector2d separationForce(Fish &fish);
     void mean(std::vector<Fish> fishes, double &meanX, double &meanY);
+    void meanVelocity(std::vector<Fish> fishes, double &meanX, double &meanY);
+    void alignment(Fish &fish);
 };
 
 

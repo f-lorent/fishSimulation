@@ -10,6 +10,10 @@ Vector2d Vector2d::operator+(const Vector2d &other) const {
     return Vector2d(x + other.x, y + other.y);
 }
 
+Vector2d Vector2d::operator-(const Vector2d &other) const {
+    return Vector2d(x - other.x, y - other.y);
+}
+
 Vector2d Vector2d::operator*(const Vector2d &other) const {
     return Vector2d(x * other.x, y * other.y);
 }

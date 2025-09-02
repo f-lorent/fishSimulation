@@ -72,6 +72,13 @@ void World::adaptPosition(Fish &fish) {
     }
 }
 
+bool World::adaptVelocity(Fish &fish) {
+    if (fish.getVelocity().length() > MAX_VELOCITY) {
+        return true;
+    }
+    return false;
+}
+
 std::vector<Fish> World::fishPerception(Fish &fish) {
     double x = fish.getPosition().getX();
     double y = fish.getPosition().getY();
@@ -147,17 +154,52 @@ void World::separation(Fish &fish) {
     fish.setVelocity(fishSeparationVelocity);
 }
 
+void World::meanVelocity(std::vector<Fish> fishes, double &meanX, double &meanY) {
+    for (Fish &f : fishes) {
+        meanX += f.getVelocity().getVx();
+        meanY += f.getVelocity().getVy();
+    }
+    meanX /= fishes.size();
+    meanY /= fishes.size();
+}
+
+/**
+ * @brief Setup of the 3rd and final rule: alignment
+ * @param fish
+ */
+void World::alignment(Fish &fish) {
+    std::vector<Fish> nearFishes = fishPerception(fish);
+    if (!nearFishes.empty()) {
+        double meanVx = 0.0;
+        double meanVy = 0.0;
+        mean(nearFishes, meanVx, meanVy);
+        Vector2d vectorAlignment = Vector2d(meanVx, meanVy) - Vector2d(fish.getVelocity().getVx(), fish.getVelocity().getVy());
+        vectorAlignment = vectorAlignment.normalize();
+        Velocity alignmentVelocity = fish.getVelocity() + vectorAlignment * ALIGNMENT_COEFFICIENT;
+        fish.setVelocity(alignmentVelocity);
+    }
+}
+
 void World::worldUpdate(double deltaTime) {
     for (Fish &f : fishes) {
         double x = f.getPosition().getX();
         double y = f.getPosition().getY();
 
-        double newX = x + deltaTime * f.getVelocity().getVx();
-        double newY = y + deltaTime * f.getVelocity().getVy();
-        Position newPosition(newX, newY);
+        Position newPosition(x, y);
+
+        if (!adaptVelocity(f)) {
+            double newX = x + deltaTime * f.getVelocity().getVx();
+            double newY = y + deltaTime * f.getVelocity().getVy();
+            newPosition.setX(newX);
+            newPosition.setY(newY);
+        } else {
+
+        }
+
         f.setPosition(newPosition);
         cohesion(f);
         separation(f);
+        alignment(f);
         adaptPosition(f);
     }
 }

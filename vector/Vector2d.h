@@ -12,6 +12,7 @@ class Vector2d {
     public:
     Vector2d(double x, double y): x(x), y(y) {};
     Vector2d operator+(const Vector2d &other) const;
+    Vector2d operator-(const Vector2d &other) const;
     Vector2d operator*(const Vector2d &other) const;
     Vector2d operator*(const double scalar) const;
     double lengh() const;
