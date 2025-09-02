@@ -9,9 +9,10 @@
 #include "../creature/fish/Fish.h"
 #include "../vector/Vector2d.h"
 
-#define COHESION_COEFFICIENT 0.005 // between 0.005 - 0.15
-#define SEPARATION_COEFFICIENT 1.5 // between 1.5 - 2.5
-#define ALIGNMENT_COEFFICIENT 0.1 // between 0.1 - 0.2
+#define COHESION_COEFFICIENT 0.0 // between 0.005 - 0.15
+#define SEPARATION_COEFFICIENT 0.0// between 1.5 - 2.5
+#define ALIGNMENT_COEFFICIENT 0.0 // between 0.1 - 0.2
+#define RESTITATION_COEFFICIENT 1
 
 class World {
     private:
@@ -30,9 +31,7 @@ class World {
     private:
     void createFishs();
     void generatePositionOfFishs();
-    bool controlPositionX(Fish &fish);
-    bool controlPositionY(Fish &fish);
-    void adaptPosition(Fish &fish);
+    void adaptPosition(Position &position, Velocity &velocity);
     bool adaptVelocity(Fish &fish);
     std::vector<Fish> fishPerception(Fish &fish);
     Vector2d separationForce(Fish &fish);

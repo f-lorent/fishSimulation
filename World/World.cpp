@@ -38,40 +38,22 @@ void World::generatePositionOfFishs() {
     }
 }
 
-bool World::controlPositionX(Fish &fish) {
-    Position position = fish.getPosition();
-    if (position.getX() >= WIDTH || position.getX() < 0) {
-        return true;
+void World::adaptPosition(Position &position, Velocity &velocity) {
+    if (position.getX() < 0) {
+        position.setX(0);
+        velocity.setVx(-velocity.getVx() * RESTITATION_COEFFICIENT);
     }
-    return false;
-}
-
-bool World::controlPositionY(Fish &fish) {
-    Position position = fish.getPosition();
-    if (position.getY() >= HEIGHT || position.getY() < 0) {
-        return true;
+    else if (position.getX() > WIDTH) {
+        position.setX(WIDTH);
+        velocity.setVx(-velocity.getVx() * RESTITATION_COEFFICIENT);
     }
-    return false;
-}
-
-void World::adaptPosition(Fish &fish) {
-    if (controlPositionX(fish)) {
-        if (fish.getPosition().getX() >= WIDTH) {
-            Position newPosition(fish.getPosition().getX() - WIDTH, fish.getPosition().getY());
-            fish.setPosition(newPosition);
-        }else {
-            Position newPosition(fish.getPosition().getX() + WIDTH, fish.getPosition().getY());
-            fish.setPosition(newPosition);
-        }
+    if (position.getY() < 0) {
+        position.setY(0);
+        velocity.setVy(-velocity.getVy() * RESTITATION_COEFFICIENT);
     }
-    else if (controlPositionY(fish)) {
-        if (fish.getPosition().getY() >= HEIGHT) {
-            Position newPosition(fish.getPosition().getX(), fish.getPosition().getY() - HEIGHT);
-            fish.setPosition(newPosition);
-        }else {
-            Position newPosition(fish.getPosition().getX(), fish.getPosition().getY() + HEIGHT);
-            fish.setPosition(newPosition);
-        }
+    else if (position.getY() > HEIGHT) {
+        position.setY(HEIGHT);
+        velocity.setVy(-velocity.getVy() * RESTITATION_COEFFICIENT);
     }
 }
 
@@ -194,16 +176,15 @@ void World::worldUpdate(double deltaTime) {
             newVelocity = newVelocity.normalize() * MAX_VELOCITY;
         }
 
-        f.setVelocity(newVelocity);
-
         Position newPosition(
-            f.getPosition().getX() + f.getVelocity().getVx() * deltaTime,
-            f.getPosition().getY() + f.getVelocity().getVy() * deltaTime
+            f.getPosition().getX() + newVelocity.getVx() * deltaTime,
+            f.getPosition().getY() + newVelocity.getVy() * deltaTime
         );
 
-        f.setPosition(newPosition);
+        adaptPosition(newPosition, newVelocity);
 
-        adaptPosition(f);
+        f.setVelocity(newVelocity);
+        f.setPosition(newPosition);
     }
 }
 
