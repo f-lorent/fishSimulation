@@ -7,15 +7,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "../World/World.h"
-
-#define HEIGHT 1080
-#define WIDTH 1920
-#define RED 10
-#define GREEN 43
-#define BLUE 88
-#define FISH_COUNT 50
-#define TIME_COEFFICIENT 50
-
+#include "../config.h"
 
 class Interface {
 private:

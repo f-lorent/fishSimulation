@@ -16,6 +16,7 @@ add_executable(FishSimulation main.cpp
         creature/velocity/Velocity.h
         vector/Vector2d.cpp
         vector/Vector2d.h
+        config.h
 )
 
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)

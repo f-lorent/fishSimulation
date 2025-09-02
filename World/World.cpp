@@ -175,12 +175,6 @@ void World::worldUpdate(double deltaTime) {
 
         Velocity newVelocity = f.getVelocity() + forceCohesion + forceSeparation + forceAlignment;
 
-        if (newVelocity.getVx() > 1 || !newVelocity.getVy() > 1) {
-            std::cout << newVelocity.getVx() << std::endl;
-            std::cout << newVelocity.getVy() << std::endl;
-            std::cout << std::endl;
-        }
-
         if (newVelocity.length() > MAX_VELOCITY) {
             newVelocity = newVelocity.normalize() * MAX_VELOCITY;
         }
