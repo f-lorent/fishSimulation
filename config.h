@@ -6,9 +6,9 @@
 #define FISHSIMULATION_CONFIG_H
 
 // Boids coefficient
-#define COHESION_COEFFICIENT 0.005 // between 0.005 - 0.15
-#define SEPARATION_COEFFICIENT 1.5// between 1.5 - 2.5
-#define ALIGNMENT_COEFFICIENT 0.01 // between 0.1 - 0.2
+#define COHESION_COEFFICIENT 0.008 // between 0.005 - 0.15
+#define SEPARATION_COEFFICIENT 0.05// between 1.5 - 2.5
+#define ALIGNMENT_COEFFICIENT 0.1 // between 0.1 - 0.2
 
 //Fish
 #define FISH_RADIUS 1
@@ -24,7 +24,7 @@
 #define BLUE 88
 
 //World
-#define FISH_COUNT 50
+#define FISH_COUNT 200
 #define TIME_COEFFICIENT 50
 
 #define RESTITATION_COEFFICIENT 1
