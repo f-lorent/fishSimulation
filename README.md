@@ -8,4 +8,4 @@ I use the [Boids model](https://en.wikipedia.org/wiki/Boids) to simulate the beh
 - alignment: steer towards the average heading of local flockmates
 - cohesion: steer to move towards the average position (center of mass) of local flockmates
 
-
+I have current issue to find good coefficient to have a more realistic result.
